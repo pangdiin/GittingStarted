@@ -1,0 +1,225 @@
+<html>
+<head>
+	<title></title>
+</head>
+
+<style>
+
+
+*{
+	margin: 0;
+	padding: 0;
+}
+body, html {
+	height: 100%;
+	width: 100%;
+	background: #1A3742;
+}
+
+.nav {
+	height: 100px;
+	/*border: black solid 3px;*/
+	position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    z-index:2;
+    /*font-weight: bold;*/
+    font-size: 20px;
+    background: black;
+    opacity: 0.7;
+
+
+}
+.collapseable {
+	/*border: 1px solid blue;*/
+	margin: 35px auto;
+}
+
+.nav ul {
+	text-align: center;
+	/*border: 3px solid green;*/
+	margin:auto;
+}
+
+.nav ul li {
+	display: inline-block;
+	list-style: none;
+	/*border: 3px solid red;*/
+	margin: auto 10px;
+	width: 100px;
+
+	-webkit-transition: all 0.3s ease-in;
+	-moz-transition: all 0.3s ease-in;
+	-o-transition: all 0.3s ease-in;
+}
+
+.nav ul li a {
+	color: white;
+	text-decoration: none;
+
+	-webkit-transition: all 0.1s ease-in;
+	-moz-transition: all 0.1s ease-in;
+	-o-transition: all 0.1s ease-in;
+}
+
+.nav ul li a:hover {
+	color: white;
+	font-weight: bold;
+	text-decoration: none;
+	border-bottom: 3px solid #22F2E4;
+}
+
+/*FOR CANVAS*/
+
+canvas {
+	display: block;
+	/*border: green solid 3px;*/
+	width: 100%;
+	height:100%;
+}
+
+.portfolio {
+	height: 100%;
+	background-color: #1AD9CC;
+	/*position: relative;*/
+}
+
+.skills {
+	height: 100%;
+	background-color: #90E0B3;
+	/*position: relative;*/
+}
+
+.contact {
+	height: 100%;
+	background-color: #E67A7F;
+	/*position: relative;*/
+}
+
+</style>
+<body>
+
+
+<canvas id="canvas"></canvas>
+
+<div class="nav">
+	<div class="collapseable">
+		<ul>
+			<li><a href="#canvas">Home</a></li>
+			<li><a href="#portfolio">Portfolio</a></li>
+			<li><a href="#skills">Skills</a></li>
+			<li><a href="#contact">Contact</a></li>
+		</ul>
+	</div>
+</div>
+
+
+<div class="portfolio" id="portfolio">
+	<h1>portfolio</h1>
+</div>
+
+<div class="skills" id="skills">
+	<h1>skills</h1>
+</div>
+
+<div class="contact" id="contact">
+	<h1>contact</h1>
+</div>
+
+
+
+
+
+
+<script>
+window.onload = function(){
+	//canvas init
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");
+	
+	//canvas dimensions
+	var W = window.innerWidth;
+	var H = window.innerHeight;
+	canvas.width = W;
+	canvas.height = H;
+	
+	//snowflake particles
+	var mp = 25; //max particles
+	var particles = [];
+	for(var i = 0; i < mp; i++)
+	{
+		particles.push({
+			x: Math.random()*W, //x-coordinate
+			y: Math.random()*H, //y-coordinate
+			r: Math.random()*4+1, //radius
+			d: Math.random()*mp //density
+		})
+	}
+	
+	//Lets draw the flakes
+	function draw()
+	{
+		ctx.clearRect(0, 0, W, H);
+		
+		ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+		ctx.beginPath();
+		for(var i = 0; i < mp; i++)
+		{
+			var p = particles[i];
+			ctx.moveTo(p.x, p.y);
+			ctx.arc(p.x, p.y, p.r, 0, Math.PI*2, true);
+		}
+		ctx.fill();
+		update();
+	}
+	
+	//Function to move the snowflakes
+	//angle will be an ongoing incremental flag. Sin and Cos functions will be applied to it to create vertical and horizontal movements of the flakes
+	var angle = 0;
+	function update()
+	{
+		angle += 0.01;
+		for(var i = 0; i < mp; i++)
+		{
+			var p = particles[i];
+			//Updating X and Y coordinates
+			//We will add 1 to the cos function to prevent negative values which will lead flakes to move upwards
+			//Every particle has its own density which can be used to make the downward movement different for each flake
+			//Lets make it more random by adding in the radius
+			p.y += Math.cos(angle+p.d) + 1 + p.r/2;
+			p.x += Math.sin(angle) * 2;
+			
+			//Sending flakes back from the top when it exits
+			//Lets make it a bit more organic and let flakes enter from the left and right also.
+			if(p.x > W+5 || p.x < -5 || p.y > H)
+			{
+				if(i%3 > 0) //66.67% of the flakes
+				{
+					particles[i] = {x: Math.random()*W, y: -10, r: p.r, d: p.d};
+				}
+				else
+				{
+					//If the flake is exitting from the right
+					if(Math.sin(angle) > 0)
+					{
+						//Enter from the left
+						particles[i] = {x: -5, y: Math.random()*H, r: p.r, d: p.d};
+					}
+					else
+					{
+						//Enter from the right
+						particles[i] = {x: W+5, y: Math.random()*H, r: p.r, d: p.d};
+					}
+				}
+			}
+		}
+	}
+	
+	//animation loop
+	setInterval(draw, 33);
+}
+
+</script>
+</body>
+</html>
