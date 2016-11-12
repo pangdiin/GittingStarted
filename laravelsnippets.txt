@@ -1,0 +1,60 @@
+
+-------------FOR Success snippets--------------
+
+<snippet>
+	<content><![CDATA[
+@if(Session::has('message'))
+	<div class="col-md-8 col-md-offset-2">
+		<div class="alert alert-success">
+			{{ Session::get('message') }}
+		</div>
+	</div>
+@endif
+<!-- show the message in session -->
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>success</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.php</scope> -->
+	<!-- <scope>text.html.laravel-blade, meta.tag.block.any.html, punctuation.definition.tag.begin.html</scope> -->
+
+</snippet>
+
+------------FOR ERRORS SNIPPETS------------------------------------
+
+<snippet>
+	<content><![CDATA[
+@if(count( ${1}errors ) > 0)
+	<div class="col-md-8 col-md-offset-2">
+		<div class="alert alert-danger">
+			<ul>
+				@foreach(${2}errors->all() as ${3}error)
+					<li>{{ ${4}error }}</li>
+				@endforeach
+			</ul>
+		</div>
+	</div>
+@endif
+<!-- show errors  -->
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>showErrors</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
+
+--------------------------FOR INPUT SNIPPETS--------------------------------------------
+
+<snippet>
+	<content><![CDATA[
+<div class="form-group">
+	<label for="${1}">${2}</label>
+	<input type="${3}" name="${4}" class="form-control" placeholder="${5}">
+</div>
+<!-- input group for $3-field -->
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>inputField</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
