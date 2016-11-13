@@ -24,12 +24,12 @@
 
 <snippet>
 	<content><![CDATA[
-@if(count( ${1}errors ) > 0)
+@if(count( \$errors ) > 0)
 	<div class="col-md-8 col-md-offset-2">
 		<div class="alert alert-danger">
 			<ul>
-				@foreach(${2}errors->all() as ${3}error)
-					<li>{{ ${4}error }}</li>
+				@foreach(\$errors->all() as \$error)
+					<li>{{ \$error }}</li>
 				@endforeach
 			</ul>
 		</div>
