@@ -1,0 +1,59 @@
+how to resize CMD
+type mode 200 -> for resizing of cmd on windows
+
+1.filp/whoops
+
+
+
+2.https://packagist.org/packages/filp/whoops
+
+3.composer require filp/whoops
+
+4.add in App\Exceptions\Handler.php
+/**
+* Create a Symfony response for the given exception.
+*
+* @param \Exception $e
+* @return mixed
+*/
+protected function convertExceptionToResponse(Exception $e)
+{
+if (config('app.debug')) {
+$whoops = new \Whoops\Run;
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+return response()->make(
+$whoops->handleException($e),
+method_exists($e, 'getStatusCode') ? $e->getStatusCode() : 500,
+method_exists($e, 'getHeaders') ? $e->getHeaders() : []
+);
+}
+return parent::convertExceptionToResponse($e);
+}
+
+
+AJAX
+
+this we copy to header of master page
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+
+and then past
+
+ $.ajaxSetup({
+         headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+          });
+
+
+TINKER NOTES
+
+php artisan tinker
+
+App\Group::all()
+
+App\Group::find(1)
+
+App\Group::find(1)->contacts --get the relationship
+
+
+App\Group::find(1)->contacts->count() --count the id of relation
