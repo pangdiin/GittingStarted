@@ -57,3 +57,8 @@ App\Group::find(1)->contacts --get the relationship
 
 
 App\Group::find(1)->contacts->count() --count the id of relation
+
+
+
+LINK FOR TOASTR JS for NOTIFICATION
+https://devdojo.com/blog/how-to/toastr-notifications-in-your-laravel-app
