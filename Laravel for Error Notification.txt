@@ -68,3 +68,10 @@ SHORTCUT COMMAND FOR PHP ARTISAN---------------------------
 
 
 type alias pa="php artisan" in command line
+
+
+------------------------------------------------
+
+ADMIN PANEL LINK
+
+http://itsolutionstuff.com/post/laravel-5-create-quick-backend-admin-panel-tutorialexample.html
