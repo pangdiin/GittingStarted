@@ -1,1 +1,329 @@
-https://github.com/cviebrock/eloquent-sluggable
+@extends('frontend.layouts.app')
+@section('meta_description', $page->description)
+@section('meta')
+    <meta name="seo" content="{{ $page->seo }}">
+@stop
+
+@section('before-styles')
+    <style type="text/css">
+
+        .outer {
+            position: relative;
+        }
+        .page-header {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 999999;
+        }
+
+        #page-wrapper {
+            height: 100%;
+        }
+
+        #header {
+            display: block;
+        }
+
+        #main-header {
+            /*border: 1px solid green;*/
+            /*position: relative;*/
+            width: 100%;
+        }
+
+        #header-links {
+            float: right;
+            /*border: 3px solid green;*/
+            background-color: transparent;
+            position: static;
+        }
+
+            #header-links .fa {
+                font-size: 20px;
+                margin-right: 10px;
+            }
+
+        #logo-container {
+            margin-left: 100px;
+            text-align: center;
+        }
+
+         nav {
+            padding: 0;
+            margin: 0;
+            font: 1em sans-serif;
+            text-align: center;
+            height: auto;
+            margin-top: 36px;
+         }
+
+         nav ul {
+            margin: 0;
+            padding: 0;
+         }
+
+         nav ul li {
+            display: inline-block;
+            margin: 0 .8em;
+        }
+
+        nav ul li a:hover {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        nav a {
+            display: block;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .category-block-container {
+            border: 1px solid #DDDDDD;
+            position: relative;
+            width: auto;
+            height: 300px;
+        }
+
+        .category-block-overlay {
+            position: absolute;
+            top: 0;
+            margin: 10px;
+            width: 320px;
+            height: 270px;
+            opacity: 0; 
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .category-block-container:hover .category-block-overlay{
+            opacity:0.8;
+        }
+
+
+
+
+    </style>
+@endsection
+
+@section('content')
+         
+    <div id="page-wrapper">
+        <div class="outer">
+            <header class="page-header">
+                <div id="header">
+                   <div id="header-links">
+                        <a href="#"><i class="fa fa-search"></i></a>
+                        <a href="#"><i class="fa fa-user"></i></a>
+                        <a href="#"><i class="fa fa-flag"></i>USD</a>
+                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
+                    </div>
+                    <div id="main-header">
+                        <div id="logo-container">
+                            <a href="#">
+                                <img src="http://www.peppermintgroveaustralia.com/sites/all/themes/peppermintgrove/logo.png">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <nav>
+                     <ul>
+                       <li><a href="#">Home</a></li>
+                       <li><a href="#">The Collection</a></li>
+                       <li><a href="#">Discover</a></li>
+                       <li><a href="#">Stockists</a></li>
+                       <li><a href="#">Contact</a></li>
+                   </ul>
+                </nav>
+            </header>
+
+           
+            @if(count($sliders))
+                <div id="slide-show" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        @foreach($sliders as $s => $slider)
+                            <li data-target="#slide-show" data-slide-to="{{ $s }}" class="{{ $loop->first ? 'active' : '' }}"></li>
+                        @endforeach
+                    </ol>
+                    <div class="carousel-inner">
+                        @foreach($sliders as $s => $slider)
+
+                            <div class="item {{ $loop->first ? 'active' : '' }}">
+                                <img src="{{ $slider->path }}" class="img-responsive">
+                                @if(config('base.slide.title') || config('base.slide.description'))
+                                <div class="container">
+                                    <div class="carousel-caption">
+                                        @if(config('base.slide.title'))
+                                            <div class="h3">{{ $slider->title }}</div>
+                                        @endif
+
+                                        @if(config('base.slide.description'))
+                                            <div class="h3">{{ $slider->description }}</div>
+                                        @endif
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                        
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+        </div>
+
+        <section style="margin-top: 20px;">
+            <div class="container">
+                <div class="col-md-5 category-block-container cat-first" style="background: url('http://lorempixel.com/1024/720/?17001');">
+                    <div class="category-block-overlay">
+                        <h2>Category 1</h2>
+                        <p><a href="#" class="btn btn-default"><span>Shop Now</span></a></p>
+                    </div>
+                </div>
+
+                <div class="col-md-5 category-block-container cat-second" style="background: url('http://lorempixel.com/1024/720/?17001'); margin-top: 20px; margin-left: 20px;">
+                    <div class="category-block-overlay">
+                        <h2>Category 1</h2>
+                        <p><a href="#" class="btn btn-default"><span>Shop Now</span></a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+     
+    </div>
+
+
+    <div class="row">
+
+        @role('Administrator')
+            {{-- You can also send through the Role ID --}}
+            <div class="col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa fa-home"></i> {{ trans('strings.frontend.tests.based_on.role') . trans('strings.frontend.tests.using_blade_extensions') }}</div>
+
+                    <div class="panel-body">
+                        {{ trans('strings.frontend.test') . ' 1: ' . trans('strings.frontend.tests.you_can_see_because', ['role' => trans('roles.administrator')]) }}
+                    </div>
+                </div><!-- panel -->
+
+            </div><!-- col-md-10 -->
+        @endauth
+
+        @if (access()->hasRole('Administrator'))
+            <div class="col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa fa-home"></i> {{ trans('strings.frontend.tests.based_on.role') . trans('strings.frontend.tests.using_access_helper.role_name') }}</div>
+
+                    <div class="panel-body">
+                        {{ trans('strings.frontend.test') . ' 2: ' . trans('strings.frontend.tests.you_can_see_because', ['role' => trans('roles.administrator')]) }}
+                    </div>
+                </div><!-- panel -->
+
+            </div><!-- col-md-10 -->
+        @endif
+
+        @if (access()->hasRole(1))
+            <div class="col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa fa-home"></i> {{ trans('strings.frontend.tests.based_on.role') . trans('strings.frontend.tests.using_access_helper.role_id') }}</div>
+
+                    <div class="panel-body">
+                        {{ trans('strings.frontend.test') . ' 3: ' . trans('strings.frontend.tests.you_can_see_because', ['role' => trans('roles.administrator')]) }}
+                    </div>
+                </div><!-- panel -->
+
+            </div><!-- col-md-10 -->
+        @endif
+
+        @if (access()->hasRoles(['Administrator', 1]))
+            <div class="col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa fa-home"></i> {{ trans('strings.frontend.tests.based_on.role') . trans('strings.frontend.tests.using_access_helper.array_roles_not') }}</div>
+
+                    <div class="panel-body">
+                        {{ trans('strings.frontend.test') . ' 4: ' . trans('strings.frontend.tests.you_can_see_because', ['role' => trans('roles.administrator')]) }}
+                    </div>
+                </div><!-- panel -->
+
+            </div><!-- col-md-10 -->
+        @endif
+
+        {{-- The second parameter says the user must have all the roles specified. Administrator does not have the role with an id of 2, so this will not show. --}}
+        @if (access()->hasRoles(['Administrator', 2], true))
+            <div class="col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa fa-home"></i> {{ trans('strings.frontend.tests.based_on.role') . trans('strings.frontend.tests.using_access_helper.array_roles') }}</div>
+
+                    <div class="panel-body">
+                        {{ trans('strings.frontend.tests.you_can_see_because', ['role' => trans('roles.administrator')]) }}
+                    </div>
+                </div><!-- panel -->
+
+            </div><!-- col-md-10 -->
+        @endif
+
+        @permission('view-backend')
+            <div class="col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa fa-home"></i> {{ trans('strings.frontend.tests.based_on.permission') . trans('strings.frontend.tests.using_access_helper.permission_name') }}</div>
+
+                    <div class="panel-body">
+                        {{ trans('strings.frontend.test') . ' 5: ' . trans('strings.frontend.tests.you_can_see_because_permission', ['permission' => 'view-backend']) }}
+                    </div>
+                </div><!-- panel -->
+
+            </div><!-- col-md-10 -->
+        @endauth
+
+        @if (access()->hasPermission(1))
+            <div class="col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa fa-home"></i> {{ trans('strings.frontend.tests.based_on.permission') . trans('strings.frontend.tests.using_access_helper.permission_id') }}</div>
+
+                    <div class="panel-body">
+                        {{ trans('strings.frontend.test') . ' 6: ' . trans('strings.frontend.tests.you_can_see_because_permission', ['permission' => 'view_backend']) }}
+                    </div>
+                </div><!-- panel -->
+
+            </div><!-- col-md-10 -->
+        @endif
+
+        @if (access()->hasPermissions(['view-backend', 1]))
+            <div class="col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa fa-home"></i> {{ trans('strings.frontend.tests.based_on.permission') . trans('strings.frontend.tests.using_access_helper.array_permissions_not') }}</div>
+
+                    <div class="panel-body">
+                        {{ trans('strings.frontend.test') . ' 7: ' . trans('strings.frontend.tests.you_can_see_because_permission', ['permission' => 'view_backend']) }}
+                    </div>
+                </div><!-- panel -->
+
+            </div><!-- col-md-10 -->
+        @endif
+
+        @if (access()->hasPermissions(['view-backend', 2], true))
+            <div class="col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa fa-home"></i> {{ trans('strings.frontend.tests.based_on.permission') . trans('strings.frontend.tests.using_access_helper.array_permissions') }}</div>
+
+                    <div class="panel-body">
+                        {{ trans('strings.frontend.tests.you_can_see_because_permission', ['permission' => 'view_backend']) }}
+                    </div>
+                </div><!-- panel -->
+
+            </div><!-- col-md-10 -->
+        @endif
+
+    </div><!--row-->
+@endsection
